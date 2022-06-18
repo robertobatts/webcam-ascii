@@ -15,7 +15,7 @@ function App() {
         p.setup = () => {
           p.noCanvas();
           video = p.createCapture(p.VIDEO);
-          video.size(100, 100);
+          video.size(110, 60);
           video.hide();
           asciiDiv = p.createDiv();
         }
@@ -26,6 +26,7 @@ function App() {
           video.loadPixels();
           let asciiImage = '';
           for (let j = 0; j < video.height; j++) {
+            let div = '';
             for (let i = video.width - 1; i >= 0; i--) {
               const pixelIndex = (i + j * video.width) * 4;
               const r = video.pixels[pixelIndex];
@@ -34,9 +35,10 @@ function App() {
               const avg = (r + g + b) / 3;
               const charIndex = p.floor(p.map(avg, 0, 255, density.length, 0));
               const char = density.charAt(charIndex);
-              asciiImage += char === ' ' ? '&nbsp' : char;
+              //asciiImage += char === ' ' ? '&nbsp' : char;
+              div += char === ' ' ? '&nbsp' : char;
             }
-            asciiImage += '<br />';
+            asciiImage += `<div class="ascii-row">${div}</div>`;
           }
           asciiDiv.html(asciiImage);
         }
