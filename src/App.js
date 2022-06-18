@@ -10,34 +10,35 @@ function App() {
     if (myP5 === undefined) {
       const sketch = (p) => {
         const density = "¶@ØÆMåBNÊßÔR#8Q&mÃ0À$GXZA5ñk2S%±3Fz¢yÝCJf1t7ªLc¿+?(r/¤²!*;\"^:,'.` ";
-        let image;
-        p.preload = () => {
-          image = p.loadImage("./dog.png");
-        }
-
+        let video;
+        let asciiDiv;
         p.setup = () => {
           p.noCanvas();
+          video = p.createCapture(p.VIDEO);
+          video.size(100, 100);
+          video.hide();
+          asciiDiv = p.createDiv();
+        }
+
+        p.draw = () => {
 
           p.background(0);
-          //p.image(image, 0, 0, p.width, p.height);
-
-          let w = p.width / image.width;
-          let h = p.height / image.height;
-          image.loadPixels();
-          for (let j = 0; j < image.height; j++) {
-            let row = '';
-            for (let i = 0; i < image.width; i++) {
-              const pixelIndex = (i + j * image.width) * 4;
-              const r = image.pixels[pixelIndex];
-              const g = image.pixels[pixelIndex + 1];
-              const b = image.pixels[pixelIndex + 2];
+          video.loadPixels();
+          let asciiImage = '';
+          for (let j = 0; j < video.height; j++) {
+            for (let i = video.width - 1; i >= 0; i--) {
+              const pixelIndex = (i + j * video.width) * 4;
+              const r = video.pixels[pixelIndex];
+              const g = video.pixels[pixelIndex + 1];
+              const b = video.pixels[pixelIndex + 2];
               const avg = (r + g + b) / 3;
               const charIndex = p.floor(p.map(avg, 0, 255, density.length, 0));
               const char = density.charAt(charIndex);
-              row += char === ' ' ? '&nbsp' : char;
+              asciiImage += char === ' ' ? '&nbsp' : char;
             }
-            p.createDiv(row);
+            asciiImage += '<br />';
           }
+          asciiDiv.html(asciiImage);
         }
       }
 
