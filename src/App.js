@@ -21,7 +21,6 @@ function App() {
         }
 
         p.draw = () => {
-
           p.background(0);
           video.loadPixels();
           let asciiImage = '';
@@ -32,10 +31,14 @@ function App() {
               const r = video.pixels[pixelIndex];
               const g = video.pixels[pixelIndex + 1];
               const b = video.pixels[pixelIndex + 2];
-              const avg = (r + g + b) / 3;
-              const charIndex = p.floor(p.map(avg, 0, 255, density.length, 0));
+              let contrast = 95;
+              let factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
+              let nR = p.constrain(factor * (r - 128) + 128, 0, 255);
+              let nG = p.constrain(factor * (g - 128) + 128, 0, 255);
+              let nB = p.constrain(factor * (b - 128) + 128, 0, 255);
+              const avg = (nR + nG + nB) / 3;
+              const charIndex = p.floor(p.map(avg, 0, 255, density.length - 1, 0));
               const char = density.charAt(charIndex);
-              //asciiImage += char === ' ' ? '&nbsp' : char;
               div += char === ' ' ? '&nbsp' : char;
             }
             asciiImage += `<div class="ascii-row">${div}</div>`;

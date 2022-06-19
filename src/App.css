@@ -1,10 +1,8 @@
 .App {
   text-align: center;
-  overflow: auto;
 }
 
 .App-header {
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -18,9 +16,9 @@
   line-height: 1em;
   color: white;
   font-family: 'Courier New', Courier, monospace;
+  width: 800px;
+  height: 720px;
 }
 
 .ascii-row {
-  max-width: 200%;
-  min-width: 100%;
 }
